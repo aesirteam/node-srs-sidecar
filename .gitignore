@@ -104,6 +104,7 @@ dist
 .tern-port
 
 .idea
+env*
 app/public/* 
 app/node_modules/*
 app/package-lock.json
