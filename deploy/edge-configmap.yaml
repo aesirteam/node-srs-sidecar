@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edge-conf
+  namespace: srs-cluster
+data:
+  srs.conf: |-
+    listen             1935;
+    max_connections    5000;
+    daemon             off;
+    srs_log_tank       console;
+    pid                ./objs/srs.pid;
+    http_api {
+      enabled          on;
+      listen           1985;
+      raw_api {
+        enabled        on;
+        allow_reload   on;
+      }
+    }
+    vhost __defaultVhost__ {
+      cluster {
+        mode           remote;
+        origin         origin-svc.srs-cluster.svc.prod.dict.gz.cmcc;
+      }
+    }

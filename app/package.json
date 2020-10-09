@@ -1,0 +1,23 @@
+{
+  "name": "srs-sidecar",
+  "version": "1.0.0",
+  "description": "srs-sidecar",
+  "author": "aesirteam",
+  "main": "index.js",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aesirteam/node-srs-sidecar.git"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0",
+    "ioredis": "^4.17.3",
+    "ioredis-conn-pool": "^1.0.0",
+    "minio": "^7.0.16",
+    "cron": "^1.8.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

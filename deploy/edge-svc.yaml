@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: edge-svc
+  namespace: srs-cluster
+  labels:
+    app: edge
+spec:
+  ports:
+    - name: rtmp
+      port: 1935
+      targetPort: rtmp
+    - name: sidecar
+      port: 3000
+      targetPort: sidecar
+  selector:
+    app: edge

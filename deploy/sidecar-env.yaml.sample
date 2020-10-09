@@ -1,0 +1,24 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: sidecar-env
+  namespace: srs-cluster
+data:
+  minio_endpoint: 'play.min.io'
+  minio_port: '80'
+  minio_use_ssl: 'false'
+  minio_accessKey: 'admin'
+  minio_secretKey: 'password'
+  minio_bucketName: 'srs-hls'
+  minio_bucketPrefix: ''
+
+  redis_sentinel_host: 'rfs-redis.srs-cluster.svc.cluster.local'
+  redis_sentinel_port: '26379'
+  redis_database: '0'
+  redis_name: 'mymaster'
+  redis_pass: 'password'
+  redis_pool_max: '10'
+  redis_pool_min: '3'
+  
+  DEFAULT_ADMIN_PASSWORD: 'password'
+  S3_REMOVE_INTERVAL_SECONDS: '3600'
