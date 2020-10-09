@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+.idea
+app/public/* 
+app/node_modules/*
+app/package-lock.json
+app/run_start.sh
