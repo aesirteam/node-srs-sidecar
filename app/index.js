@@ -267,14 +267,17 @@ app.post('/:mode/:vhost/:app/:stream/:sub', auth_admin, (req, res, next) => {
 
 app.post('/storage', (req, res, next) => {
     res.set('Content-Type', 'application/json')
-    req.on('data', async (body) => {
+    req.on('data', (body) => {
         try {
             let data = JSON.parse(body)
 
-            await s3.fPutObject(data.url, util.format('./public/%s', data.url))
-            await s3.fPutObject(data.m3u8_url, util.format('./public/%s', data.m3u8_url))
-
-            res.send({code: 0})
+            s3.fPutObject(data.url, util.format('./public/%s', data.url), (err, etag) => {
+                if (err) { throw err }
+                s3.fPutObject(data.m3u8_url, util.format('./public/%s', data.m3u8_url), (err, etag) => {
+                    if (err) { throw err }
+                    res.send({code: 0})
+                })
+            })
         } catch(e) {
             next(customError(500, e.message))
         }

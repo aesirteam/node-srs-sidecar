@@ -43,9 +43,7 @@ exports.init = () => {
 }
 
 exports.fPutObject = (objectName, filePath, callback) => {
-	s3Client.fPutObject(bucketName, bucketPrefix.concat(objectName), filePath, {}, (err, etag) => {
-		if (err) throw err
-	})
+	s3Client.fPutObject(bucketName, bucketPrefix.concat(objectName), filePath, {Content-Type: 'application/octet-stream'}, callback)
 }
 
 exports.getObject = (objectName, callback) => {
