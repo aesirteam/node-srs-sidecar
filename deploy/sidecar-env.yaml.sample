@@ -21,4 +21,4 @@ data:
   redis_pool_min: '3'
   
   DEFAULT_ADMIN_PASSWORD: 'password'
-  S3_REMOVE_INTERVAL_SECONDS: '3600'
+  AUTO_REMOVE_TTL_SECONDS: '180'
