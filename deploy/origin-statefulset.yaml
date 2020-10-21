@@ -1,26 +1,24 @@
-kind: Deployment
+kind: StatefulSet
 apiVersion: apps/v1
 metadata:
   labels:
-    app: edge
-  name: edge
+    app: origin
+  name: origin
   namespace: srs-cluster
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: edge
+      app: origin
   template:
     metadata:
       labels:
-        app: edge
+        app: origin
     spec:
       volumes:
         - name: conf
           configMap:
-            name: edge-conf
-        - name: hls
-          emptyDir: {}
+            name: origin-conf
       containers:
       - name: srs
         image: 'hub.bigdatagz.com/ossrs/srs:v4.0'
@@ -44,19 +42,18 @@ spec:
         ports:
           - name: sidecar
             containerPort: 3000
+        env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.podIP
         envFrom:
           - configMapRef:
               name: sidecar-env
-        volumeMounts:
-          - name: hls
-            mountPath: /app/public
+        args:
+          - webhook
       restartPolicy: Always
-      hostAliases:
-        - ip: 10.204.62.33
-          hostnames:
-            - pan.bigdatagz.com
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+  serviceName: origin-svc
+  updateStrategy:
+    type: OnDelete

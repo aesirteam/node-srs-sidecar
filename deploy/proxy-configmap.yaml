@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: origin-conf
+  name: proxy-conf
   namespace: srs-cluster
 data:
   srs.conf: |-
@@ -21,17 +21,7 @@ data:
     }
     vhost __defaultVhost__ {
       cluster {
-        mode           local;
-        origin_cluster on;
-        coworkers      127.0.0.1:3000;
-      }
-      http_hooks {
-        enabled        on;
-        on_publish     http://127.0.0.1:3000/auth;
-        on_play        http://127.0.0.1:3000/auth;
-      }
-      forward {
-        enabled        on;
-        destination    hls-fragment-svc.srs-cluster.svc.prod.dict.gz.cmcc;
+        mode           remote;
+        origin         origin-svc.srs-cluster.svc.prod.dict.gz.cmcc;
       }
     }

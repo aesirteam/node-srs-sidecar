@@ -2,23 +2,23 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   labels:
-    app: origin
-  name: origin
+    app: proxy
+  name: proxy
   namespace: srs-cluster
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: origin
+      app: proxy
   template:
     metadata:
       labels:
-        app: origin
+        app: proxy
     spec:
       volumes:
         - name: conf
           configMap:
-            name: origin-conf
+            name: proxy-conf
         - name: hls
           emptyDir: {}
       containers:
@@ -31,8 +31,6 @@ spec:
         volumeMounts:
           - name: conf
             mountPath: /app
-          - name: hls
-            mountPath: /usr/local/srs/objs/nginx/html
         livenessProbe: 
           httpGet:
             path: /api/v1/versions
@@ -47,27 +45,16 @@ spec:
           - name: sidecar
             containerPort: 3000
         env:
-          - name: POD_IP
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: status.podIP
-        envFrom:
-          - configMapRef:
-              name: sidecar-env
+          - name: UPSTREAM_URL
+            value: http://edge-svc.srs-cluster.svc.prod.dict.gz.cmcc:3000
         volumeMounts:
           - name: hls
             mountPath: /app/public
-      - name: configmap-reload
-        image: 'hub.bigdatagz.com/jimmidyson/configmap-reload:v0.3.0'
-        volumeMounts:
-          - name: conf
-            mountPath: /app
         args:
-          - '-volume-dir'
-          - '/app'
-          - '-webhook-url'
-          - 'http://127.0.0.1:1985/api/v1/raw?rpc=reload&scope=configmap&data=/app/srs.conf'
+          - proxy
       restartPolicy: Always
   strategy:
     type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1

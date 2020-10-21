@@ -1,12 +1,15 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: origin-svc
+  name: proxy-svc
   namespace: srs-cluster
 spec:
   ports:
     - name: rtmp
       port: 1935
       targetPort: rtmp
+    - name: sidecar
+      port: 3000
+      targetPort: sidecar
   selector:
-    app: origin
+    app: proxy

@@ -6,9 +6,10 @@ metadata:
 data:
   srs.conf: |-
     listen             1935;
-    max_connections    5000;
+    max_connections    3000;
     daemon             off;
     srs_log_tank       console;
+    srs_log_level      warn;
     pid                ./objs/srs.pid;
     http_api {
       enabled          on;

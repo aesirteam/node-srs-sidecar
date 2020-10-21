@@ -11,13 +11,15 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "express-basic-auth": "^1.2.0",
     "ioredis": "^4.17.3",
     "ioredis-conn-pool": "^1.0.0",
     "minio": "^7.0.16",
-    "cron": "^1.8.2"
+    "cron": "^1.8.2",
+    "axios": "^0.20.0"
   },
   "scripts": {
+    "webhook": "node webhook.js",
+    "proxy": "node proxy.js",
     "start": "node index.js"
   }
 }

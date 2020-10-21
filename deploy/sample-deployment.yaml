@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: sample
+  name: sample
+  namespace: srs-cluster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+      - name: srs
+        image: 'hub.bigdatagz.com/ossrs/rtmp-push-sample:latest'
+        env:
+        - name: RTMP_HOST
+          value: origin-svc.srs-cluster.svc.prod.dict.gz.cmcc
+        - name: RTMP_USER
+          value: zhongkui
+        - name: RTMP_PASSWORD
+          value: gfxth9l78x
+        imagePullPolicy: Always
+      restartPolicy: Always
